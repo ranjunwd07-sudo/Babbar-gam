@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Babbar Group Official Portfolio</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Cinzel Font for corporate headings and Inter for body text -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        :root {
+            --color-primary: #003366; /* Deep Corporate Blue */
+            --color-accent: #D4AF37; /* Sophisticated Gold */
+        }
+        .cinzel { font-family: 'Cinzel', serif; }
+        .inter { font-family: 'Inter', sans-serif; }
+
+        body {
+            background-color: #f7f9fb;
+            color: #333;
+            scroll-behavior: smooth;
+        }
+        
+        .company-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 4px solid transparent;
+        }
+        .company-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 51, 102, 0.15);
+            border-bottom-color: var(--color-accent);
+        }
+
+        .top-tier-card {
+            background-color: var(--color-accent) !important;
+            color: #000 !important;
+            border: 4px solid var(--color-primary);
+            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Chatbot specific styles */
+        #chat-window {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            transform: translateY(20px);
+            opacity: 0;
+            pointer-events: none;
+        }
+        #chat-window.open {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .chat-bubble-user {
+            background-color: var(--color-primary);
+            color: white;
+            border-bottom-right-radius: 2px;
+        }
+        .chat-bubble-ai {
+            background-color: #f3f4f6;
+            color: #1f2937;
+            border-bottom-left-radius: 2px;
+            border: 1px solid #e5e7eb;
+        }
+        .dot-pulse {
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        /* Logo and Portrait styling */
+        .official-logo {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            border-radius: 50%;
+            background: white;
+            padding: 2px;
+            border: 2px solid var(--color-accent);
+        }
+
+        .chairman-portrait {
+            width: 220px;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 1rem;
+            border: 2px solid var(--color-accent);
+            box-shadow: 0 20px 40px rgba(0, 51, 102, 0.1);
+        }
+
+        /* Cleaned Header */
+        header {
+            border-bottom: 3px solid var(--color-accent);
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+        }
+    </style>
+    
+    <script>
+        const LOGO_URL = "https://lh3.googleusercontent.com/u/0/d/1ze1cJXyrOLZggv6cE9a4YI96cXsxUk-B";
+        const CHAIRMAN_IMG_URL = "https://lh3.googleusercontent.com/u/0/d/1zqNnvMDdbfXzjhvIyaYsusqLFV1LFZbF";
+        const RAJESHWARI_PDF_URL = "https://drive.google.com/file/d/1C8ruwHDRWBAkwRUSUzRtflrT67pAgv7v/view?usp=drivesdk";
+        const JOB_SMS_NUMBER = "+917061090263";
+        const apiKey = "";
+
+        const companiesData = [
+            { name: "ALLIANCE CAREER INSTITUTE", description: "Competitive exam coaching and career guidance for all academic and professional streams, ensuring success.", category: "Education - Flagship", url: "https://ranjunwd07-sudo.github.io/Fffg/" },
+            { name: "RAJSHREE FLOUR", description: "Premium quality wheat flour products, ensuring purity and nutrition for every kitchen.", category: "FMCG", url: "https://ranjunwd07-sudo.github.io/stunning-doodle/" },
+            { name: "SUMANGALM GAS AGENCY", description: "Reliable and safe distribution of domestic and commercial LPG with prompt service.", category: "Energy", url: "https://ranjunwd07-sudo.github.io/Ccghh/" },
+            { name: "GOLDLIFE EDIBLE OIL", description: "Pure, healthy, and high-quality cooking oils derived from natural ingredients.", category: "FMCG", url: "https://ranjunwd07-sudo.github.io/Ghhhc/" },
+            { name: "RAINANDANI RICE", description: "Finest selection of aromatic and long-grain Basmati rice varieties.", category: "FMCG", url: "https://ranjunwd07-sudo.github.io/Gvog/" },
+            { name: "RAHGIR FUEL STATION", description: "24/7 service for petrol, diesel, and convenience store needs across major highways.", category: "Energy", url: "https://ranjunwd07-sudo.github.io/Bhu/" },
+            { name: "VIDHYUT TRANSMISSION", description: "High-voltage electrical power transmission and infrastructure development, powering future growth.", category: "Infrastructure", url: "https://ranjunwd07-sudo.github.io/Bbbhj/" },
+            { name: "VEDIC HOSPITAL", description: "Specialized care combining modern diagnostics with traditional and holistic medicine for comprehensive wellness.", category: "Healthcare", url: "https://ranjunwd07-sudo.github.io/Ddd/" },
+            { name: "AROGYA HOSPITAL", description: "A multi-specialty modern medical and surgical facility dedicated to exceptional patient care and recovery.", category: "Healthcare", url: "https://ranjunwd07-sudo.github.io/Ffff/" },
+            { name: "SWASTIK HOSPITAL", description: "Community-focused primary healthcare and 24-hour emergency services, ensuring access for all.", category: "Healthcare", url: "https://ranjunwd07-sudo.github.io/Fghh/" },
+            { name: "RESONANCE COMMERCIAL PROPERTY", description: "Development and management of cutting-edge office spaces and retail complexes in prime urban centers.", category: "Real Estate", url: "https://ranjunwd07-sudo.github.io/Hddi/" },
+            { name: "HAMPER SPECIAL PURPOSE PROPERTY", description: "Specialized infrastructure projects, including high-tech logistics warehouses and secure data centers.", category: "Real Estate", url: "https://ranjunwd07-sudo.github.io/Ghhh/" },
+            { name: "SUGUN RESIDENTIAL PROPERTY", description: "Affordable and luxury housing projects designed for modern family living with superior amenities.", category: "Real Estate", url: "https://ranjunwd07-sudo.github.io/probable-guacamole/" },
+            { name: "HARVARD ENGLISH SCHOOL", description: "Primary and secondary education focused on global English proficiency and critical thinking skills.", category: "Education", url: "https://ranjunwd07-sudo.github.io/Fffghh/" },
+            { name: "RAJESHWARI COLLEGE OF EDUCATION", description: "Teacher training programs and higher education in pedagogy and liberal arts, shaping future educators.", category: "Education", url: RAJESHWARI_PDF_URL },
+        ];
+
+        function LionIcon(color = 'currentColor', classes = 'w-8 h-8') {
+            return `
+                <svg class="${classes}" fill="${color}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 1.5c-3.1 0-5.7 2.6-5.7 5.7 0 1.9.8 3.7 2.1 4.9L8.8 15v7.5h6.4V15l2.4-2.9c1.3-1.2 2.1-3 2.1-4.9 0-3.1-2.6-5.7-5.7-5.7zm0 10.3c-1.8 0-3.3-1.5-3.3-3.3s1.5-3.3 3.3-3.3 3.3 1.5 3.3 3.3-1.5 3.3-3.3 3.3z"/>
+                    <circle cx="12" cy="8.5" r="1.5" fill="${color}"/>
+                    <path d="M12 4L14 6H10L12 4Z" fill="${color}"/>
+                </svg>
+            `;
+        }
+
+        function showDetails(index) {
+            const company = companiesData[index];
+            const detailsPanel = document.getElementById('details-panel');
+            const actionLink = document.getElementById('detail-action-link');
+            
+            document.getElementById('detail-name').textContent = company.name;
+            document.getElementById('detail-description').textContent = company.description;
+            document.getElementById('detail-category').textContent = company.category;
+            
+            actionLink.textContent = index === 14 ? "View Official Brochure →" : "Visit Official Venture Page →";
+            actionLink.href = company.url;
+            actionLink.target = "_blank";
+            
+            detailsPanel.classList.remove('hidden');
+            setTimeout(() => {
+                detailsPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+        }
+
+        function submitJobApplication(event) {
+            event.preventDefault();
+            const form = event.target;
+            const message = `BABBAR GROUP JOB APPLICATION\nName: ${form.applicant_name.value}\nVenture: ${form.applicant_company.value}\nRole: ${form.applicant_position.value}`;
+            window.location.href = `sms:${JOB_SMS_NUMBER}?body=${encodeURIComponent(message)}`;
+            document.getElementById('job-feedback').classList.remove('hidden');
+            form.reset();
+        }
+
+        async function callGemini(userQuery) {
+            const systemPrompt = `Assistant for Babbar Group. Chairman: Mr. Raj Babbar Raj. Ventures: ${JSON.stringify(companiesData)}. Professional tone.`;
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: userQuery }] }], systemInstruction: { parts: [{ text: systemPrompt }] } })
+                });
+                const data = await response.json();
+                return data.candidates?.[0]?.content?.parts?.[0]?.text || "Error processing request.";
+            } catch (err) { return "Connectivity issue."; }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+            if (!message) return;
+            appendMessage('user', message);
+            input.value = '';
+            document.getElementById('typing-indicator').classList.remove('hidden');
+            const response = await callGemini(message);
+            document.getElementById('typing-indicator').classList.add('hidden');
+            appendMessage('ai', response);
+        }
+
+        function appendMessage(sender, text) {
+            const container = document.getElementById('chat-messages');
+            const div = document.createElement('div');
+            div.className = `mb-4 flex ${sender === 'user' ? 'justify-end' : 'justify-start'}`;
+            div.innerHTML = `<div class="max-w-[80%] p-3 rounded-xl text-sm ${sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-ai'}">${text}</div>`;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function toggleChat() { document.getElementById('chat-window').classList.toggle('open'); }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const gridContainer = document.getElementById('company-grid');
+            companiesData.forEach((company, index) => {
+                const isAlliance = index === 0;
+                const button = document.createElement('div');
+                button.setAttribute('onclick', `showDetails(${index})`);
+                button.className = isAlliance 
+                    ? 'p-6 rounded-xl shadow-lg company-card cursor-pointer lg:col-span-3 top-tier-card' 
+                    : 'p-6 bg-white rounded-xl shadow-sm company-card cursor-pointer border border-gray-100';
+
+                button.innerHTML = `
+                    <div class="flex items-center mb-4">
+                        <div class="p-2 rounded-lg mr-4 bg-white/10">
+                            ${LionIcon(isAlliance ? 'var(--color-primary)' : 'var(--color-primary)', 'w-6 h-6')}
+                        </div>
+                        <span class="text-[10px] font-bold cinzel uppercase tracking-widest opacity-70">${company.category}</span>
+                    </div>
+                    <h3 class="inter ${isAlliance ? 'text-2xl' : 'text-lg'} font-black text-gray-900 uppercase">${company.name}</h3>
+                    <p class="inter text-xs text-gray-500 mt-2 line-clamp-2">${company.description}</p>
+                `;
+                gridContainer.appendChild(button);
+            });
+
+            const jobSelect = document.getElementById('applicant_company');
+            companiesData.forEach(c => {
+                const o = document.createElement('option'); o.value = c.name; o.textContent = c.name; jobSelect.appendChild(o);
+            });
+
+            lucide.createIcons();
+            document.getElementById('chat-input').addEventListener('keypress', (e) => e.key === 'Enter' && sendMessage());
+        });
+
+        function scrollToSection(id) { document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); }
+    </script>
+</head>
+<body class="inter">
+
+    <!-- Clean Header -->
+    <header class="bg-white sticky top-0 z-30 shadow-sm">
+        <div class="max-w-7xl mx-auto flex justify-between items-center p-4 md:px-8">
+            <div class="flex items-center gap-4">
+                <img src="https://lh3.googleusercontent.com/u/0/d/1ze1cJXyrOLZggv6cE9a4YI96cXsxUk-B" class="official-logo" alt="Babbar Group Logo">
+                <h1 class="cinzel text-xl md:text-2xl font-black text-blue-900 tracking-tighter">BABBAR GROUP</h1>
+            </div>
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="#portfolio" class="text-blue-900 hover:text-blue-700 transition font-bold text-sm uppercase tracking-widest">Portfolio</a>
+                <a href="javascript:void(0)" onclick="scrollToSection('careers')" class="text-blue-900 hover:text-blue-700 transition font-bold text-sm uppercase tracking-widest">Careers</a>
+                <button onclick="scrollToSection('contact-info')" class="bg-blue-900 text-white font-bold py-2 px-6 rounded-sm shadow-md hover:bg-blue-800 transition text-xs uppercase tracking-widest">Partner With Us</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-4 md:p-12">
+        
+        <!-- Clean Chairman Section: No text on image -->
+        <section class="mb-16 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="flex flex-col md:flex-row items-center">
+                <!-- Image Side -->
+                <div class="w-full md:w-1/3 bg-slate-50 flex items-center justify-center p-8">
+                    <img src="https://lh3.googleusercontent.com/u/0/d/1zqNnvMDdbfXzjhvIyaYsusqLFV1LFZbF" 
+                         alt="Chairman" 
+                         class="chairman-portrait">
+                </div>
+                <!-- Content Side -->
+                <div class="w-full md:w-2/3 p-8 md:p-16">
+                    <div class="inline-block px-3 py-1 bg-blue-50 text-blue-900 text-[10px] font-bold tracking-[0.3em] uppercase mb-4 rounded">
+                        Visionary Leadership
+                    </div>
+                    <h2 class="cinzel text-4xl md:text-5xl font-black text-gray-900 mb-2">MR. RAJ BABBAR RAJ</h2>
+                    <p class="text-sm font-bold cinzel text-[#D4AF37] uppercase tracking-widest mb-6">Chairman, Babbar Group</p>
+                    
+                    <div class="w-20 h-1 bg-blue-900 mb-8"></div>
+                    
+                    <p class="text-xl text-gray-600 leading-relaxed italic mb-8 border-l-4 border-slate-200 pl-6">
+                        "We prove by action."
+                    </p>
+                    <p class="text-gray-500 leading-relaxed text-sm max-w-xl">
+                        Guided by the values of Quality and Discipline, the Babbar Group continues to drive innovation and excellence across global verticals. We are committed to building infrastructure that serves humanity.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slogan Section -->
+        <section class="text-center py-12 mb-16">
+            <h3 class="cinzel text-2xl font-bold text-blue-950 uppercase tracking-[0.5em] opacity-40">Quality • Discipline • Action</h3>
+        </section>
+
+        <!-- Business Portfolio -->
+        <section id="portfolio" class="py-10">
+            <h2 class="cinzel text-3xl font-black text-blue-950 mb-12 border-b-2 border-slate-100 pb-4 text-center uppercase tracking-widest">Business Portfolio</h2>
+            <div id="company-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        </section>
+
+        <!-- Detailed View Panel -->
+        <section id="details" class="mt-20 pt-8 border-t-2 border-gray-100">
+            <div id="details-panel" class="hidden flex-col bg-white rounded-2xl shadow-xl p-8 md:p-16 border border-gray-100">
+                <div class="flex items-center mb-8">
+                    <div class="p-4 rounded-full shadow-inner mr-6 bg-slate-50 border border-gray-100 text-blue-900">
+                        ${LionIcon('currentColor', 'w-10 h-10')}
+                    </div>
+                    <div>
+                        <span id="detail-category" class="text-[10px] cinzel font-black px-3 py-1 rounded-full bg-blue-900 text-white tracking-widest uppercase mb-2 inline-block">Category</span>
+                        <h3 id="detail-name" class="cinzel text-3xl md:text-5xl font-black text-gray-900 uppercase">Enterprise Profile</h3>
+                    </div>
+                </div>
+                <div class="max-w-3xl">
+                    <p id="detail-description" class="text-lg text-gray-600 leading-relaxed border-l-4 border-[#D4AF37] pl-8 mb-10 italic"></p>
+                    <a id="detail-action-link" href="#" class="inline-block cinzel font-black py-4 px-10 bg-blue-900 text-white rounded-sm shadow-lg hover:bg-blue-800 transition text-sm tracking-widest">VISIT WEBSITE →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Careers Section -->
+        <section id="careers" class="mt-32 py-20 bg-slate-50 rounded-3xl border border-gray-200">
+            <div class="max-w-4xl mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="cinzel text-4xl font-black text-blue-950 uppercase tracking-widest">Join Our Legacy</h2>
+                    <p class="text-gray-500 mt-4">Become part of a team where discipline drives success.</p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-8 md:p-12 shadow-sm border border-gray-100">
+                    <form onsubmit="submitJobApplication(event)" class="space-y-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase tracking-widest text-gray-400">Full Name</label>
+                                <input type="text" name="applicant_name" required class="w-full border-b-2 border-slate-100 p-3 bg-transparent font-bold">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase tracking-widest text-gray-400">Select Venture</label>
+                                <select name="applicant_company" id="applicant_company" required class="w-full border-b-2 border-slate-100 p-3 bg-transparent font-bold">
+                                    <option value="" disabled selected>Choose a company...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black uppercase tracking-widest text-gray-400">Position / Role</label>
+                            <input type="text" name="applicant_position" required class="w-full border-b-2 border-slate-100 p-3 bg-transparent font-bold">
+                        </div>
+                        <div id="job-feedback" class="hidden p-4 bg-green-50 text-green-700 rounded text-center text-xs font-bold uppercase tracking-widest">
+                            SMS application prepared...
+                        </div>
+                        <button type="submit" class="w-full bg-blue-900 text-white py-5 rounded-sm font-black cinzel text-sm tracking-[0.2em] shadow-xl hover:bg-blue-800 transition uppercase">
+                            Submit Application via SMS
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact-info" class="mt-32 py-12">
+            <div class="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 px-4">
+                <div class="text-center group cursor-pointer">
+                    <i data-lucide="phone" class="w-8 h-8 mx-auto mb-4 text-blue-900 group-hover:text-[#D4AF37] transition"></i>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Call HQ</p>
+                    <a href="tel:+919065919011" class="font-black text-blue-900">+91 9065919011</a>
+                </div>
+                <div class="text-center group cursor-pointer">
+                    <i data-lucide="mail" class="w-8 h-8 mx-auto mb-4 text-blue-900 group-hover:text-[#D4AF37] transition"></i>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Email</p>
+                    <a href="mailto:ranjunwd07@gmail.com" class="font-black text-blue-900 break-all text-xs">ranjunwd07@gmail.com</a>
+                </div>
+                <div class="text-center group cursor-pointer">
+                    <i data-lucide="facebook" class="w-8 h-8 mx-auto mb-4 text-blue-900 group-hover:text-[#D4AF37] transition"></i>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Social</p>
+                    <p class="font-black text-blue-900">Babbar Group</p>
+                </div>
+                <div class="text-center group cursor-pointer">
+                    <i data-lucide="youtube" class="w-8 h-8 mx-auto mb-4 text-blue-900 group-hover:text-[#D4AF37] transition"></i>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Media</p>
+                    <p class="font-black text-blue-900">Official Channel</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Chatbot Component -->
+    <div id="chatbot-ui" class="fixed bottom-6 right-6 z-50">
+        <button onclick="toggleChat()" class="w-16 h-16 rounded-full shadow-2xl flex items-center justify-center transition hover:scale-110 active:scale-95 overflow-hidden bg-white border-2 border-blue-900">
+             <img src="https://lh3.googleusercontent.com/u/0/d/1ze1cJXyrOLZggv6cE9a4YI96cXsxUk-B" class="w-full h-full object-cover" alt="Chat Logo">
+        </button>
+
+        <div id="chat-window" class="absolute bottom-20 right-0 w-80 md:w-96 bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-gray-100">
+            <div class="p-4 text-white flex justify-between items-center" style="background-color: var(--color-primary);">
+                <div class="flex items-center gap-3">
+                    <img src="https://lh3.googleusercontent.com/u/0/d/1ze1cJXyrOLZggv6cE9a4YI96cXsxUk-B" class="w-8 h-8 rounded-full bg-white object-contain p-0.5" alt="Logo">
+                    <p class="font-bold text-xs cinzel uppercase tracking-widest">Concierge</p>
+                </div>
+                <button onclick="toggleChat()"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div id="chat-messages" class="flex-1 h-80 overflow-y-auto p-4 bg-slate-50 text-sm">
+                <div class="mb-4 flex justify-start">
+                    <div class="max-w-[80%] p-3 rounded-xl chat-bubble-ai">
+                        Welcome to the official Babbar Group portal. How can I assist you with our ventures today?
+                    </div>
+                </div>
+                <div id="typing-indicator" class="hidden mb-4 flex justify-start">
+                    <div class="max-w-[80%] p-3 rounded-xl chat-bubble-ai flex gap-1 items-center">
+                        <span class="w-1 h-1 bg-gray-400 rounded-full dot-pulse"></span>
+                        <span class="w-1 h-1 bg-gray-400 rounded-full dot-pulse" style="animation-delay: 0.2s"></span>
+                        <span class="w-1 h-1 bg-gray-400 rounded-full dot-pulse" style="animation-delay: 0.4s"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="p-3 bg-white border-t flex gap-2">
+                <input id="chat-input" type="text" placeholder="Your inquiry..." class="flex-1 bg-slate-50 rounded-sm px-4 py-2 text-xs focus:outline-none">
+                <button onclick="sendMessage()" class="p-2 text-blue-900">
+                    <i data-lucide="send" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="bg-white py-12 border-t border-gray-100">
+        <div class="max-w-7xl mx-auto text-center">
+            <p class="cinzel font-black text-blue-900 tracking-[0.4em] mb-4 uppercase">The Babbar Group</p>
+            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-[0.3em]">© 2025 | All Rights Reserved | Quality and Discipline</p>
+        </div>
+    </footer>
+
+</body>
+</html>
+
+ callGemini(query) {
+            const sys = `You are the Babbar Group AI Assistant. 
+            Chairman: Mr. Raj Babbar Raj. 
+            Slogan: "We prove by action." 
+            Core Values: Quality and Discipline.
+            Ventures: ${entities.map(e => e.name).join(', ')}.
+            Alliance Career Institute is flagship (${ALLIANCE_WEBSITE}).
+            Rajeshwari College PDF: ${RAJESHWARI_PDF}.
+            Contact: +91 9065919011, ranjunwd07@gmail.com.
+            Tone: Professional, regal, concise. If they ask for the college info, mention the PDF specifically.`;
+
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            
+            // Exponential backoff logic
+            for (let i = 0, delay = 1000; i < 5; i++, delay *= 2) {
+                try {
+                    const res = await fetch(url, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: query }] }],
+                            systemInstruction: { parts: [{ text: sys }] }
+                        })
+                    });
+                    if (!res.ok) throw new Error('API Error');
+                    const data = await res.json();
+                    return data.candidates?.[0]?.content?.parts?.[0]?.text;
+                } catch (e) {
+                    if (i === 4) return "I'm experiencing a high volume of inquiries. Please contact our support team at +91 9065919011.";
+                    await new Promise(r => setTimeout(r, delay));
+                }
+            }
+        }
+
+        async function handleSend() {
+            const input = document.getElementById('user-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            appendMsg('user', text);
+            input.value = '';
+            
+            const typing = document.getElementById('typing');
+            typing.classList.remove('hidden');
+
+            const reply = await callGemini(text);
+            typing.classList.add('hidden');
+            appendMsg('ai', reply);
+        }
+
+        // Init
+        window.onload = () => {
+            renderGrid();
+            document.getElementById('user-input').addEventListener('keypress', e => {
+                if(e.key === 'Enter') handleSend();
+            });
+        };
+    </script>
+</body>
+</html>
+
